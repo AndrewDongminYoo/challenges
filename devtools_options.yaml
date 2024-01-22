@@ -1,0 +1,3 @@
+# https://github.com/flutter/devtools/blob/main/packages/devtools_app/devtools_options.yaml
+extensions:
+  - provider: true
