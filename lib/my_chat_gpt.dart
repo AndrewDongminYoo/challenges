@@ -63,7 +63,7 @@ class _MyChatGPTState extends State<MyChatGPT> {
               TextSpan(
                 text: '3.5',
                 style: TextStyle(fontSize: 14, color: Colors.grey),
-              )
+              ),
             ],
           ),
         ),
@@ -99,11 +99,13 @@ class _MyChatGPTState extends State<MyChatGPT> {
                 ),
               ),
               onFieldSubmitted: (value) {
-                messages.add(ChatMessage(
-                  isMine: true,
-                  name: 'AndrewDongminYoo',
-                  content: value,
-                ));
+                messages.add(
+                  ChatMessage(
+                    isMine: true,
+                    name: 'AndrewDongminYoo',
+                    content: value,
+                  ),
+                );
                 messages.add(ChatMessage());
                 controller.clear();
                 focusNode.requestFocus();

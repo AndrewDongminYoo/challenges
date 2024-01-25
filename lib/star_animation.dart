@@ -67,27 +67,29 @@ class _RollingStarAnimationState extends State<RollingStarAnimation>
           top: top, // Adjust the initial vertical position
           left: left, // Start off-screen to the left
           child: AnimatedBuilder(
-      animation: _rollAnimation,
-      builder: (context, child) {
-        final screenWidth = MediaQuery.of(context).size.width;
-        final screenHeight = MediaQuery.of(context).size.height;
+            animation: _rollAnimation,
+            builder: (context, child) {
+              final screenWidth = MediaQuery.of(context).size.width;
+              final screenHeight = MediaQuery.of(context).size.height;
 
-        // Calculate left position based on the animation value
-        final leftPosition = (_rollAnimation.value * 100) % screenWidth;
+              // Calculate left position based on the animation value
+              final leftPosition = (_rollAnimation.value * 100) % screenWidth;
 
-        // Calculate top position based on the animation value and screen height
-        final topPosition = (_rollAnimation.value % (2 * pi)) / (2 * pi) * screenHeight; // Adjust the factor as needed
+              // Calculate top position based on the animation value and screen height
+              final topPosition = (_rollAnimation.value % (2 * pi)) /
+                  (2 * pi) *
+                  screenHeight; // Adjust the factor as needed
 
-        return Positioned(
-          top: topPosition,
-          left: leftPosition,
-          child: Transform.rotate(
-            angle: _rollAnimation.value,
-            child: _buildStar(),
+              return Positioned(
+                top: topPosition,
+                left: leftPosition,
+                child: Transform.rotate(
+                  angle: _rollAnimation.value,
+                  child: _buildStar(),
+                ),
+              );
+            },
           ),
-        );
-      },
-    ),
         ),
       ],
     );
@@ -118,7 +120,8 @@ class StarPainter extends CustomPainter {
     for (var i = 0; i < 5; i++) {
       final angle = (i * 2 * pi / 5) - (pi / 2);
       outerPoints.add(
-          Offset(centerX + radius * cos(angle), centerY + radius * sin(angle)));
+        Offset(centerX + radius * cos(angle), centerY + radius * sin(angle)),
+      );
     }
 
     // Draw the star

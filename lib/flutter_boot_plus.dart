@@ -148,7 +148,7 @@ class Feature extends StatelessWidget {
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

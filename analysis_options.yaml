@@ -70,7 +70,7 @@ linter:
     # 런타임 환경에 콘솔에 너무 많은 데이터를 노출하는 것은 좋지 않지만, 나중에 삭제해도 늦지 않습니다.
     avoid_print: false
     # 필수 후행 쉼표 누락 - 가로로 너무 긴 코드 만큼, 줄바꿈이 너무 많은 코드도 가독성이 낮아집니다.
-    require_trailing_commas: false
+    require_trailing_commas: true
     # '다이나믹' 대상에 대한 메서드 호출 또는 속성 액세스. 대상에 타입을 지정해 보세요.
     avoid_dynamic_calls: false
     # 도큐먼트 코멘트에 참조된 이름에 대한 임포트를 추가 - 불필요합니다.
