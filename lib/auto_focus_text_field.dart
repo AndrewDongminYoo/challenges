@@ -1,5 +1,7 @@
 // 🐦 Flutter imports:
 import 'package:flutter/material.dart';
+
+// 📦 Package imports:
 import 'package:google_fonts/google_fonts.dart';
 
 void main() => runApp(const MyApp());
@@ -52,7 +54,7 @@ class _AutoFocusTextFieldState extends State<AutoFocusTextField> {
                 key: renderKey,
                 controller: controller,
                 focusNode: focusNode1,
-                onChanged:(value) {
+                onChanged: (value) {
                   final formLength = renderKey.currentContext!.size!.width;
                   final textLength = controller.value.text.length * 10;
                   if (formLength < textLength) {
@@ -71,7 +73,7 @@ class _AutoFocusTextFieldState extends State<AutoFocusTextField> {
               child: TextFormField(
                 initialValue: 'FlutterBoot!',
                 focusNode: focusNode2,
-                onChanged:(value) {
+                onChanged: (value) {
                   if (value.isEmpty) {
                     focusNode1.requestFocus();
                   }
