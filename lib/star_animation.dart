@@ -1,3 +1,8 @@
+/// This example code can be run immediately
+/// via the dartpad at the following address.
+/// Author: AndrewDongminYoo<ydm2790@gmail.com>
+/// https://dartpad.dev/?id=0da630db490a658ab8a8d19db197937c
+
 // 🎯 Dart imports:
 import 'dart:math';
 

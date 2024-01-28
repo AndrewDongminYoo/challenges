@@ -1,3 +1,8 @@
+/// This example code can be run immediately
+/// via the dartpad at the following address.
+/// Author: AndrewDongminYoo<ydm2790@gmail.com>
+/// https://dartpad.dev/?id=d2f5e333a09b52f3f987f60abd5b50b3
+
 // 🎯 Dart imports:
 import 'dart:async';
 import 'dart:ui';
@@ -17,7 +22,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Material App',
+      title: 'Tap To Score Game',
       home: TapToScoreGame(),
     );
   }
