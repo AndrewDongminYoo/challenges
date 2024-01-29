@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
 }
 
 class FlutterBootPlus extends StatefulWidget {
-  const FlutterBootPlus({Key? key}) : super(key: key);
+  const FlutterBootPlus({super.key});
 
   @override
   State<FlutterBootPlus> createState() => _FlutterBootPlusState();

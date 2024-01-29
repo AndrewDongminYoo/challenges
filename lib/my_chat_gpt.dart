@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyChatGPT extends StatefulWidget {
-  const MyChatGPT({Key? key}) : super(key: key);
+  const MyChatGPT({super.key});
 
   @override
   State<MyChatGPT> createState() => _MyChatGPTState();
