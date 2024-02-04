@@ -24,6 +24,7 @@ environment:
 # 어떤 종속 요소에 최신 버전이 있는지 확인하려면 `flutter pub outdated`를 실행합니다.
 dependencies:
   cupertino_icons: ^1.0.6
+  dart_code_metrics: ^4.19.2
   flutter:
     sdk: flutter
   google_fonts: ^6.1.0
