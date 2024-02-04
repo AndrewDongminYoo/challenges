@@ -128,7 +128,7 @@ class Info extends StatelessWidget {
   }
 }
 
-extension NavigationExtensions on BuildContext {
+extension on BuildContext {
   void scrollToTop() {
     PrimaryScrollController.maybeOf(this)?.animateTo(
       /** top offset */ 0,

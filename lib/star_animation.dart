@@ -74,16 +74,15 @@ class _RollingStarAnimationState extends State<RollingStarAnimation>
           child: AnimatedBuilder(
             animation: _rollAnimation,
             builder: (context, child) {
-              final screenWidth = MediaQuery.of(context).size.width;
-              final screenHeight = MediaQuery.of(context).size.height;
+              final screen = MediaQuery.sizeOf(context);
 
               // Calculate left position based on the animation value
-              final leftPosition = (_rollAnimation.value * 100) % screenWidth;
+              final leftPosition = (_rollAnimation.value * 100) % screen.width;
 
               // Calculate top position based on the animation value and screen height
               final topPosition = (_rollAnimation.value % (2 * pi)) /
                   (2 * pi) *
-                  screenHeight; // Adjust the factor as needed
+                  screen.height; // Adjust the factor as needed
 
               return Positioned(
                 top: topPosition,
@@ -136,6 +135,9 @@ class StarPainter extends CustomPainter {
   }
 
   @override
+  // covariant(공변량)는 일반 유형 매개변수가 공변적으로 변할 수 있음을 나타냅니다.
+  // 하위 유형 인자(예: List<Cat>)가 있는 제네릭 유형을 상위 유형 인자(예: List<Animal>)가 있는 제네릭 유형의 하위 유형으로 취급할 수 있습니다.
+  // 이를 통해 보다 유연하고 재사용 가능한 제네릭 코드를 작성할 수 있습니다.
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return false;
   }

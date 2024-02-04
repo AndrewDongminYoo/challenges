@@ -85,7 +85,7 @@ class _BlowUpHeartBalloonsState extends State<BlowUpHeartBalloons> {
         return HeartBalloon(
           offset: beginOffset,
           entry: overlayEntry,
-          arrival: MediaQuery.of(context).size.height / 2,
+          arrival: MediaQuery.sizeOf(context).height / 2,
         );
       },
     );
