@@ -42,7 +42,7 @@ const contents = [
   ContentModel(
     uri: 'https://images.unsplash.com/photo-1478098711619-5ab0b478d6e6',
     status: Status.onGoing,
-    owner: '주인',
+    owner: '아띠',
     updatedAt: '2021-02-14',
   ),
 ];
@@ -73,6 +73,17 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<String> _pets = ['까미', '아띠', '주인'];
   String? _selectedPet;
   Status? _selectedStatus;
+  List<String> get _availablePets {
+    return _pets
+        .where((pet) => contents.any((content) => content.owner == pet))
+        .toList();
+  }
+
+  List<Status> get _availableStatuses {
+    return Status.values
+        .where((status) => contents.any((content) => content.status == status))
+        .toList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,9 +108,10 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Column(
         children: [
+          // 반려동물 필터
           Wrap(
-            spacing: 4,
-            children: _pets
+            spacing: 8,
+            children: _availablePets
                 .map(
                   (pet) => FilterChip(
                     label: Text(pet),
@@ -111,9 +123,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                   ),
                 )
-                .toList()
-              ..addAll(
-                Status.values.map(
+                .toList(),
+          ),
+          // 상태 필터
+          Wrap(
+            spacing: 8,
+            children: _availableStatuses
+                .map(
                   (status) => FilterChip(
                     label: Text(genText(status)),
                     selected: _selectedStatus == status,
@@ -123,13 +139,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       });
                     },
                   ),
-                ),
-              ),
+                )
+                .toList(),
           ),
           Expanded(
             child: CamiListViewExample(
-              owner: _selectedPet ?? '까미',
-              status: _selectedStatus ?? Status.notYet,
+              owner: _selectedPet,
+              status: _selectedStatus,
             ),
           ),
         ],
@@ -176,17 +192,18 @@ String genText(Status status) {
 class CamiListViewExample extends StatelessWidget {
   const CamiListViewExample({
     super.key,
-    required this.status,
-    required this.owner,
+    this.status,
+    this.owner,
   });
 
-  final String owner;
-  final Status status;
+  final String? owner;
+  final Status? status;
 
   @override
   Widget build(BuildContext context) {
     final filtered = contents.where((content) {
-      return content.owner == owner && content.status == status;
+      return (owner == null || content.owner == owner) &&
+          (status == null || content.status == status);
     }).toList();
 
     return Container(
