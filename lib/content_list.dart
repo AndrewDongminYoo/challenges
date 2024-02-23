@@ -54,7 +54,7 @@ class CamiExampleApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark().copyWith(
+      theme: ThemeData.light().copyWith(
         scaffoldBackgroundColor: Colors.white,
       ),
       home: const HomeScreen(),
@@ -69,21 +69,13 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen>
-    with SingleTickerProviderStateMixin {
-  String selectedPet = '까미';
-  late TabController controller;
-
-  @override
-  void initState() {
-    super.initState();
-    controller = TabController(length: 3, vsync: this);
-  }
+class _HomeScreenState extends State<HomeScreen> {
+  final List<String> _pets = ['까미', '아띠', '주인'];
+  String? _selectedPet;
+  Status? _selectedStatus;
 
   @override
   Widget build(BuildContext context) {
-    final pets = <String>['까미', '아띠', '주인'];
-    const states = Status.values;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -102,44 +94,42 @@ class _HomeScreenState extends State<HomeScreen>
           size: 20,
           color: Color(0xFF1E1E1E),
         ),
-        actions: [
-          DropdownButton<String>(
-            value: selectedPet,
-            onChanged: (value) {
-              print(value);
-              setState(() {
-                selectedPet = value!;
-              });
-            },
-            items: pets.map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value, style: const TextStyle(color: Colors.grey)),
-              );
-            }).toList(),
-          ),
-        ],
       ),
       body: Column(
         children: [
-          Container(
-            color: Colors.grey[200],
-            child: TabBar(
-              controller: controller,
-              labelColor: Colors.black,
-              unselectedLabelColor: Colors.grey,
-              tabs: states.map((e) => Tab(text: e.name)).toList(),
-            ),
+          Wrap(
+            spacing: 4,
+            children: _pets
+                .map(
+                  (pet) => FilterChip(
+                    label: Text(pet),
+                    selected: _selectedPet == pet,
+                    onSelected: (bool selected) {
+                      setState(() {
+                        _selectedPet = selected ? pet : null;
+                      });
+                    },
+                  ),
+                )
+                .toList()
+              ..addAll(
+                Status.values.map(
+                  (status) => FilterChip(
+                    label: Text(genText(status)),
+                    selected: _selectedStatus == status,
+                    onSelected: (bool selected) {
+                      setState(() {
+                        _selectedStatus = selected ? status : null;
+                      });
+                    },
+                  ),
+                ),
+              ),
           ),
           Expanded(
-            child: TabBarView(
-              controller: controller,
-              children: List.generate(states.length, (index) {
-                return CamiListViewExample(
-                  owner: selectedPet,
-                  status: states[index],
-                );
-              }).toList(),
+            child: CamiListViewExample(
+              owner: _selectedPet ?? '까미',
+              status: _selectedStatus ?? Status.notYet,
             ),
           ),
         ],
@@ -176,9 +166,9 @@ String genText(Status status) {
     case Status.notYet:
       return '검사 전';
     case Status.onGoing:
-      return '진행 완료';
+      return '진행 중';
     case Status.completed:
-      return '보고서';
+      return '진행 완료';
   }
 }
 
@@ -198,6 +188,7 @@ class CamiListViewExample extends StatelessWidget {
     final filtered = contents.where((content) {
       return content.owner == owner && content.status == status;
     }).toList();
+
     return Container(
       alignment: Alignment.topCenter,
       child: filtered.isEmpty
@@ -223,6 +214,7 @@ class ContentCard extends StatelessWidget {
     super.key,
     required this.model,
   });
+
   final ContentModel model;
 
   @override
