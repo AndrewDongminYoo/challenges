@@ -1,9 +1,51 @@
 // 🐦 Flutter imports:
 import 'package:flutter/material.dart';
 
+// 📦 Package imports:
+import 'package:google_fonts/google_fonts.dart';
+
 void main() {
   runApp(const CamiExampleApp());
 }
+
+const contents = [
+  ContentModel(
+    uri: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba',
+    status: Status.notYet,
+    owner: '까미',
+    updatedAt: '2021-02-01',
+  ),
+  ContentModel(
+    uri: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba',
+    status: Status.notYet,
+    owner: '까미',
+    updatedAt: '2021-01-31',
+  ),
+  ContentModel(
+    uri: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba',
+    status: Status.notYet,
+    owner: '까미',
+    updatedAt: '2021-02-14',
+  ),
+  ContentModel(
+    uri: 'https://images.unsplash.com/photo-1519052537078-e6302a4968d4',
+    status: Status.completed,
+    owner: '아띠',
+    updatedAt: '2021-02-14',
+  ),
+  ContentModel(
+    uri: 'https://images.unsplash.com/photo-1494256997604-768d1f608cac',
+    status: Status.onGoing,
+    owner: '까미',
+    updatedAt: '2021-02-14',
+  ),
+  ContentModel(
+    uri: 'https://images.unsplash.com/photo-1478098711619-5ab0b478d6e6',
+    status: Status.onGoing,
+    owner: '주인',
+    updatedAt: '2021-02-14',
+  ),
+];
 
 class CamiExampleApp extends StatelessWidget {
   const CamiExampleApp({super.key});
@@ -15,30 +57,92 @@ class CamiExampleApp extends StatelessWidget {
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          title: const Text(
-            '검사 목록',
-            style: TextStyle(
-              color: Color(0xFF262626),
-              fontSize: 16,
-              fontFamily: 'Pretendard',
-              fontWeight: FontWeight.w600,
-              height: 0.06,
+      home: const HomeScreen(),
+    );
+  }
+}
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
+  String selectedPet = '까미';
+  late TabController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = TabController(length: 3, vsync: this);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final pets = <String>['까미', '아띠', '주인'];
+    const states = Status.values;
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: const Text(
+          '검사 목록',
+          style: TextStyle(
+            color: Color(0xFF262626),
+            fontSize: 16,
+            fontFamily: 'Pretendard',
+            fontWeight: FontWeight.w600,
+            height: 0.06,
+          ),
+        ),
+        leading: const Icon(
+          Icons.arrow_back_ios_new_outlined,
+          size: 20,
+          color: Color(0xFF1E1E1E),
+        ),
+        actions: [
+          DropdownButton<String>(
+            value: selectedPet,
+            onChanged: (value) {
+              print(value);
+              setState(() {
+                selectedPet = value!;
+              });
+            },
+            items: pets.map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value, style: const TextStyle(color: Colors.grey)),
+              );
+            }).toList(),
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          Container(
+            color: Colors.grey[200],
+            child: TabBar(
+              controller: controller,
+              labelColor: Colors.black,
+              unselectedLabelColor: Colors.grey,
+              tabs: states.map((e) => Tab(text: e.name)).toList(),
             ),
           ),
-          leading: const Icon(
-            Icons.arrow_back_ios_new_outlined,
-            size: 20,
-            color: Color(0xFF1E1E1E),
+          Expanded(
+            child: TabBarView(
+              controller: controller,
+              children: List.generate(states.length, (index) {
+                return CamiListViewExample(
+                  owner: selectedPet,
+                  status: states[index],
+                );
+              }).toList(),
+            ),
           ),
-        ),
-        body: ListView(
-          children: const [
-            CamiListViewExample(),
-          ],
-        ),
+        ],
       ),
     );
   }
@@ -58,56 +162,58 @@ class ContentModel {
   final String updatedAt;
 }
 
-enum Status { notYet, onGoing, completed }
+enum Status {
+  // 검사 전
+  notYet,
+  // 검사 진행 중
+  onGoing,
+  // 검사 완료
+  completed,
+}
+
+String genText(Status status) {
+  switch (status) {
+    case Status.notYet:
+      return '검사 전';
+    case Status.onGoing:
+      return '진행 완료';
+    case Status.completed:
+      return '보고서';
+  }
+}
 
 /// https://www.figma.com/file/uOOTFkJ7S43T76vg3wd1P5/[CAMI]-카미-MVP?&node-id=3617-15678
 class CamiListViewExample extends StatelessWidget {
-  const CamiListViewExample({super.key});
+  const CamiListViewExample({
+    super.key,
+    required this.status,
+    required this.owner,
+  });
+
+  final String owner;
+  final Status status;
 
   @override
   Widget build(BuildContext context) {
-    const contents = [
-      ContentModel(
-        uri: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba',
-        status: Status.notYet,
-        owner: '까미',
-        updatedAt: '2021-02-14',
-      ),
-      ContentModel(
-        uri: 'https://images.unsplash.com/photo-1519052537078-e6302a4968d4',
-        status: Status.completed,
-        owner: '아띠',
-        updatedAt: '2021-02-14',
-      ),
-      ContentModel(
-        uri: 'https://images.unsplash.com/photo-1494256997604-768d1f608cac',
-        status: Status.onGoing,
-        owner: '까미',
-        updatedAt: '2021-02-14',
-      ),
-      ContentModel(
-        uri: 'https://images.unsplash.com/photo-1478098711619-5ab0b478d6e6',
-        status: Status.onGoing,
-        owner: '주인',
-        updatedAt: '2021-02-14',
-      ),
-    ];
-    return Column(
-      children: [
-        SizedBox(
-          width: 320,
-          height: 928,
-          child: ListView.separated(
-            itemBuilder: (context, index) {
-              return ContentCard(model: contents[index]);
-            },
-            separatorBuilder: (context, index) {
-              return const SizedBox(height: 32);
-            },
-            itemCount: contents.length,
-          ),
-        ),
-      ],
+    final filtered = contents.where((content) {
+      return content.owner == owner && content.status == status;
+    }).toList();
+    return Container(
+      alignment: Alignment.topCenter,
+      child: filtered.isEmpty
+          ? Text(
+              '텅',
+              style: GoogleFonts.kirangHaerang(
+                fontSize: 400,
+                color: Colors.black,
+              ),
+            )
+          : ListView.builder(
+              itemBuilder: (context, index) {
+                return ContentCard(model: filtered[index]);
+              },
+              itemCount: filtered.length,
+            ),
     );
   }
 }
@@ -130,6 +236,9 @@ class ContentCard extends StatelessWidget {
     );
     return Container(
       height: 208,
+      width: MediaQuery.sizeOf(context).width,
+      margin: const EdgeInsets.symmetric(vertical: 16),
+      alignment: Alignment.topCenter,
       decoration: const BoxDecoration(color: Colors.white),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -207,7 +316,7 @@ class ContentCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            model.status == Status.onGoing ? '검사 시작' : '검사 완료',
+                            genText(model.status),
                             style: const TextStyle(
                               color: Color(0xFF171717),
                               fontSize: 14,
